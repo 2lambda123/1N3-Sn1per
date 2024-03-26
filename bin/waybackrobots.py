@@ -7,7 +7,7 @@ from multiprocessing.dummy import Pool
 def robots(host):
     r = requests.get(
         'https://web.archive.org/cdx/search/cdx\
-        ?url=%s/robots.txt&output=json&fl=timestamp,original&filter=statuscode:200&collapse=digest' % host)
+        ?url=%s/robots.txt&output=json&fl=timestamp,original&filter=statuscode:200&collapse=digest' % host, timeout=60)
     results = r.json()
     if len(results) == 0: # might find nothing
         return []
@@ -17,7 +17,7 @@ def robots(host):
 
 def getpaths(snapshot):
     url = 'https://web.archive.org/web/{0}/{1}'.format(snapshot[0], snapshot[1])
-    robotstext = requests.get(url).text
+    robotstext = requests.get(url, timeout=60).text
     if 'Disallow:' in robotstext:  # verify it's acually a robots.txt file, not 404 page
         paths = re.findall('/.*', robotstext)
         return paths

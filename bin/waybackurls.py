@@ -8,7 +8,7 @@ def waybackurls(host, with_subs):
         url = 'http://web.archive.org/cdx/search/cdx?url=*.%s/*&output=json&fl=original&collapse=urlkey' % host
     else:
         url = 'http://web.archive.org/cdx/search/cdx?url=%s/*&output=json&fl=original&collapse=urlkey' % host
-    r = requests.get(url)
+    r = requests.get(url, timeout=60)
     results = r.json()
     return results[1:]
 
